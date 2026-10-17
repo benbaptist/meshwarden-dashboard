@@ -105,6 +105,10 @@
       '      <div class="convo__header-name">{{ title }}</div>' +
       '      <div class="convo__header-sub">{{ subtitle }}</div>' +
       '    </div>' +
+      '    <button v-if="scope === \'contact\'" class="icon-btn" title="Contact details"' +
+      '      @click="$router.push(\'/contacts/\' + peer + \'/info\')" aria-label="Contact details">' +
+      '      <mw-icon name="info" :size="19" />' +
+      '    </button>' +
       '  </div>' +
       '  <div class="convo__scroll" ref="scroll">' +
       '    <template v-for="item in items" :key="item.key">' +

@@ -2,7 +2,9 @@
      repeater/sensor → detail page
      companion       → conversation
      room server     → conversation if authed, else password gate
-   /contacts/:key/info forces the detail page (used by the Settings quick action). */
+   /contacts/:key/info forces the detail page (chat header info icon, room
+   login screen, list quick action). /contacts/:key/manage shows the
+   repeater management placeholder. */
 
 (function () {
   window.MW = window.MW || {};
@@ -23,10 +25,14 @@
       forceInfo: function () {
         return this.$route.params.mode === "info";
       },
+      forceManage: function () {
+        return this.$route.params.mode === "manage";
+      },
       mode: function () {
         var c = this.contact;
         if (!c) return "missing";
         if (this.forceInfo) return "detail";
+        if (this.forceManage) return "manage";
         if (c.type === 1) return "chat";
         if (c.type === 3) return this.store.isRoomAuthed(c.public_key) ? "chat" : "auth";
         return "detail"; // repeater (2), sensor (4)
@@ -36,6 +42,7 @@
       '<mw-empty v-if="mode === \'missing\'" icon="search" title="Contact not found" subtitle="It may have been pruned from the archive." />' +
       '<mw-conversation v-else-if="mode === \'chat\'" scope="contact" :peer="key_" />' +
       '<mw-room-auth v-else-if="mode === \'auth\'" :contact="contact" />' +
+      '<mw-manage v-else-if="mode === \'manage\'" :contact="contact" />' +
       '<mw-contact-detail v-else :contact="contact" />',
   };
 })();

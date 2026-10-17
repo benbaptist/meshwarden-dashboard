@@ -53,6 +53,9 @@
       '        {{ busy ? "Authenticating…" : "Authenticate" }}' +
       '      </button>' +
       '    </form>' +
+      '    <button class="auth-reset" @click="$router.push(\'/contacts/\' + contact.public_key + \'/info\')">' +
+      '      <mw-icon name="info" :size="14" /> View node details without logging in' +
+      '    </button>' +
       '    <p style="font-size:12.5px;color:var(--text-2)">Mock auth — any password works until the API is wired.</p>' +
       '  </div>' +
       "</div>",

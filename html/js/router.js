@@ -25,7 +25,7 @@
         meta: { title: "Contacts" },
         children: [
           { path: "", component: PickContact },
-          { path: ":key/:mode(info)?", component: V.ContactHome },
+          { path: ":key/:mode(info|manage)?", component: V.ContactHome },
         ],
       },
       {
