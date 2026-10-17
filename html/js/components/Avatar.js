@@ -7,8 +7,8 @@
 
   function hueFromKey(key) {
     var h = 0;
-    for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 360;
-    return h;
+    for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
+    return Math.round((h % 360) * 137.508) % 360; // golden-angle spread
   }
 
   MW.components.Avatar = {

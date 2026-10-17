@@ -34,7 +34,7 @@
     },
     template:
       '<div class="page">' +
-      '  <button class="icon-btn" @click="$router.push(\'/contacts\')" aria-label="Back to contacts">' +
+      '  <button class="icon-btn only-mobile" @click="$router.push(\'/contacts\')" aria-label="Back to contacts">' +
       '    <mw-icon name="arrow-left" :size="20" />' +
       '  </button>' +
       '  <div class="auth-card">' +

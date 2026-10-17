@@ -1,7 +1,7 @@
 /* Service worker — precaches the app shell so the dashboard installs and
    runs fully offline. Bump CACHE when shipping asset changes. */
 
-const CACHE = "meshwarden-v1";
+const CACHE = "meshwarden-v2";
 
 const SHELL = [
   "./",

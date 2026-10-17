@@ -65,7 +65,7 @@
       '  <div class="contact-item__actions" @click.stop>' +
       '    <button v-if="pingable" class="icon-btn" :title="ping.state === \'done\' ? ping.ms + \' ms\' : \'Ping\'" @click="doPing">' +
       '      <span v-if="ping.state === \'done\'" class="mono" style="font-size:11px;color:var(--ok)">{{ ping.ms }}ms</span>' +
-      '      <mw-icon v-else name="satellite-dish" :size="18" :class="{ shake: ping.state === \'busy\' }" />' +
+      '      <mw-icon v-else name="satellite-dish" :size="18" :class="{ pinging: ping.state === \'busy\' }" />' +
       '    </button>' +
       '    <button v-if="pingable" class="icon-btn" title="Settings" @click="openSettings">' +
       '      <mw-icon name="settings" :size="18" />' +

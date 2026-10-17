@@ -27,7 +27,7 @@
       '<nav class="side-nav">' +
       '  <div class="side-nav__brand">' +
       '    <div class="side-nav__logo"><mw-icon name="radio-tower" :size="20" /></div>' +
-      '    <div>' +
+      '    <div class="side-nav__brand-meta">' +
       '      <div class="side-nav__title">MeshWarden</div>' +
       '      <div class="side-nav__subtitle">Node Dashboard</div>' +
       '    </div>' +

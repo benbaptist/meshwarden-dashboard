@@ -56,8 +56,10 @@
       { scope: "contact", peer: "f2a3b4c5d6e7", dir: "out", text: "Yes — meet at the usual spot at 10.", ts: now - 3 * HOUR + 300 },
       { scope: "contact", peer: "8b9c0d1e2f3a", dir: "in",  text: "Finally got the antenna up on the mast!", ts: now - 1 * DAY },
       { scope: "contact", peer: "8c9d0e1f2a3b", dir: "out", text: "Battery's dying, going dark for a bit.", ts: now - 3 * DAY },
-      { scope: "contact", peer: "b7e89f0a1c2d", dir: "in",  text: "Room uptime now 32 days.", ts: now - 12 * MIN, sender: "Downtown Room" },
-      { scope: "contact", peer: "b7e89f0a1c2d", dir: "out", text: "Solid. Thanks for hosting!", ts: now - 11 * MIN },
+      { scope: "contact", peer: "b7e89f0a1c2d", dir: "in",  text: "Anyone up for a range test this weekend?", ts: now - 40 * MIN, sender: "Maya's T-Deck" },
+      { scope: "contact", peer: "b7e89f0a1c2d", dir: "in",  text: "I'm in. Bringing the new yagi.", ts: now - 31 * MIN, sender: "Jon (Companion)" },
+      { scope: "contact", peer: "b7e89f0a1c2d", dir: "out", text: "Nice — I'll log results in the ops channel.", ts: now - 13 * MIN },
+      { scope: "contact", peer: "b7e89f0a1c2d", dir: "in",  text: "Room uptime now 32 days, for the record.", ts: now - 12 * MIN, sender: "Priya's Node" },
 
       { scope: "channel", peer: "ch-public",  dir: "in", text: "Welcome to the mesh, new nodes popping up weekly.", ts: now - 6 * HOUR, sender: "Hilltop Repeater" },
       { scope: "channel", peer: "ch-public",  dir: "in", text: "Anyone got eyes on the valley path? It's been flaky.", ts: now - 50 * MIN, sender: "Jon (Companion)" },

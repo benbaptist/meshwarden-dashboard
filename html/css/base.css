@@ -13,6 +13,7 @@
 html,
 body {
   height: 100%;
+  overflow: hidden; /* all scrolling happens in inner containers */
 }
 
 body {
