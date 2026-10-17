@@ -723,6 +723,80 @@
   margin-top: var(--sp-2);
 }
 
+.channel-add-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.channel-add-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 62px;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+  color: var(--text-0);
+  text-align: left;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.channel-add-option:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--bg-2);
+}
+
+.channel-add-option:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.channel-add-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.channel-add-option > :first-child {
+  flex: none;
+  color: var(--accent);
+}
+
+.channel-add-option > :last-child {
+  flex: none;
+  color: var(--text-2);
+}
+
+.channel-add-option span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.channel-add-option small {
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.modal-step-enter-active,
+.modal-step-leave-active {
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.modal-step-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.modal-step-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
 /* ================= Segmented control ================= */
 
 .seg {

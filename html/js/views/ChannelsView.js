@@ -18,7 +18,34 @@
         copied: false,
       };
     },
+    computed: {
+      hasPublicChannel: function () {
+        return this.store.channels.some(function (c) {
+          return c.type !== "private" && c.name.toLowerCase() === "public";
+        });
+      },
+      modalTitle: function () {
+        return {
+          menu: "Add channel",
+          create: "Create private channel",
+          private: "Join private channel",
+          public: "Join hashtag channel",
+          created: "Private channel created",
+        }[this.modal] || "Add channel";
+      },
+      modalIcon: function () {
+        return { menu: "hash", create: "lock", private: "key-round", public: "hash", created: "key-round" }[this.modal] || "hash";
+      },
+    },
     methods: {
+      startAddChannel: function () {
+        this.channelError = "";
+        this.modal = "menu";
+      },
+      backToMenu: function () {
+        this.channelError = "";
+        this.modal = "menu";
+      },
       isActive: function (c) {
         return this.$route.params.id === c.id;
       },
@@ -83,10 +110,7 @@
       '<div class="md-layout" :class="{ \'detail-open\': $route.params.id }">' +
       '  <div class="md-list">' +
       '    <div class="page-header" style="padding:var(--sp-3);display:flex;gap:var(--sp-2);flex-wrap:wrap">' +
-      '      <button class="btn btn--primary btn--sm" @click="modal = \'create\'">Create private</button>' +
-      '      <button class="btn btn--ghost btn--sm" @click="modal = \'private\'">Join private</button>' +
-      '      <button class="btn btn--ghost btn--sm" @click="modal = \'public\'">Join hashtag</button>' +
-      '      <button class="btn btn--ghost btn--sm" @click="rejoinPublic">Re-join Public</button>' +
+      '      <button class="btn btn--primary btn--sm" @click="startAddChannel"><mw-icon name="plus" :size="16" /> Add channel</button>' +
       '    </div>' +
       '    <div class="list-section">Channels</div>' +
       '    <div v-for="c in store.channels" :key="c.id" class="contact-item"' +
@@ -108,29 +132,44 @@
       '  <div class="md-detail">' +
       '    <router-view />' +
       '  </div>' +
-      '  <mw-modal v-if="modal === \'create\'" title="Create private channel" icon="lock" @close="modal = \'\'">' +
-      '    <p>A new secret will be generated and this node will join the channel.</p>' +
-      '    <label class="form-label">Local channel name<input class="input" v-model="channelName" placeholder="e.g. Field Team" /></label>' +
-      '    <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="modal = \'\'">Cancel</button><button class="btn btn--primary" @click="createPrivate">Create and join</button></div>' +
-      '  </mw-modal>' +
-      '  <mw-modal v-if="modal === \'private\'" title="Join private channel" icon="key-round" @close="modal = \'\'">' +
-      '    <label class="form-label">Channel secret<input class="input mono" v-model="channelSecret" autocomplete="off" placeholder="32 hexadecimal characters" /></label>' +
-      '    <label class="form-label">Local channel name<input class="input" v-model="channelName" placeholder="Any name for your own list" /></label>' +
-      '    <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="modal = \'\'">Cancel</button><button class="btn btn--primary" @click="joinPrivate">Join channel</button></div>' +
-      '  </mw-modal>' +
-      '  <mw-modal v-if="modal === \'created\'" title="Private channel created" icon="key-round" @close="modal = \'\'">' +
-      '    <p>Save this secret. Other members need the same secret to communicate; the channel name is local to each node.</p>' +
-      '    <input class="input mono" readonly :value="createdSecret" />' +
-      '    <p v-if="copied">Secret copied.</p><p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="copySecret(createdSecret)">Copy secret</button><button class="btn btn--primary" @click="modal = \'\'">Done</button></div>' +
-      '  </mw-modal>' +
-      '  <mw-modal v-if="modal === \'public\'" title="Join hashtag channel" icon="hash" @close="modal = \'\'">' +
-      '    <label class="form-label">Channel name<input class="input" v-model="channelName" placeholder="#community" /></label>' +
-      '    <p>Public channels do not require a secret key.</p>' +
-      '    <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="modal = \'\'">Cancel</button><button class="btn btn--primary" @click="joinPublic">Join channel</button></div>' +
+      '  <mw-modal v-if="modal" :title="modalTitle" :icon="modalIcon" @close="modal = \'\'">' +
+      '    <transition name="modal-step" mode="out-in">' +
+      '      <div :key="modal">' +
+      '        <template v-if="modal === \'menu\'">' +
+      '          <p>Choose how you want to add a channel.</p>' +
+      '          <div class="channel-add-options">' +
+      '            <button class="channel-add-option" @click="modal = \'create\'"><mw-icon name="lock" :size="20" /><span><strong>Create private channel</strong><small>Generate a new secret and join</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
+      '            <button class="channel-add-option" @click="modal = \'private\'"><mw-icon name="key-round" :size="20" /><span><strong>Join private channel</strong><small>Enter a shared secret and local name</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
+      '            <button class="channel-add-option" @click="modal = \'public\'"><mw-icon name="hash" :size="20" /><span><strong>Join hashtag channel</strong><small>Join a public channel by name</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
+      '            <button class="channel-add-option" :disabled="hasPublicChannel" @click="rejoinPublic"><mw-icon name="refresh-cw" :size="20" /><span><strong>Re-join Public</strong><small>{{ hasPublicChannel ? "Public is already on this node" : "Restore the default public channel" }}</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
+      '          </div>' +
+      '        </template>' +
+      '        <template v-else-if="modal === \'create\'">' +
+      '          <p>A new secret will be generated and this node will join the channel.</p>' +
+      '          <label class="form-label">Local channel name<input class="input" v-model="channelName" placeholder="e.g. Field Team" /></label>' +
+      '          <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
+      '          <div class="modal__actions"><button class="btn btn--ghost" @click="backToMenu">Back</button><button class="btn btn--primary" @click="createPrivate">Create and join</button></div>' +
+      '        </template>' +
+      '        <template v-else-if="modal === \'private\'">' +
+      '          <label class="form-label">Channel secret<input class="input mono" v-model="channelSecret" autocomplete="off" placeholder="32 hexadecimal characters" /></label>' +
+      '          <label class="form-label">Local channel name<input class="input" v-model="channelName" placeholder="Any name for your own list" /></label>' +
+      '          <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
+      '          <div class="modal__actions"><button class="btn btn--ghost" @click="backToMenu">Back</button><button class="btn btn--primary" @click="joinPrivate">Join channel</button></div>' +
+      '        </template>' +
+      '        <template v-else-if="modal === \'created\'">' +
+      '          <p>Save this secret. Other members need the same secret to communicate; the channel name is local to each node.</p>' +
+      '          <input class="input mono" readonly :value="createdSecret" />' +
+      '          <p v-if="copied">Secret copied.</p><p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
+      '          <div class="modal__actions"><button class="btn btn--ghost" @click="copySecret(createdSecret)">Copy secret</button><button class="btn btn--primary" @click="modal = \'\'">Done</button></div>' +
+      '        </template>' +
+      '        <template v-else>' +
+      '          <label class="form-label">Channel name<input class="input" v-model="channelName" placeholder="#community" /></label>' +
+      '          <p>Public channels do not require a secret key.</p>' +
+      '          <p v-if="channelError" class="text-danger">{{ channelError }}</p>' +
+      '          <div class="modal__actions"><button class="btn btn--ghost" @click="backToMenu">Back</button><button class="btn btn--primary" @click="joinPublic">Join channel</button></div>' +
+      '        </template>' +
+      '      </div>' +
+      '    </transition>' +
       '  </mw-modal>' +
       "</div>",
   };
