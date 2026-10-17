@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MeshWarden</title>
+  <meta name="description" content="MeshWarden dashboard for your MeshCore node" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MeshWarden" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Vendored dependencies (fully offline, no CDN) -->
+  <script src="vendor/vue.global.prod.js"></script>
+  <script src="vendor/vue-router.global.prod.js"></script>
+
+  <!-- App sources (classic scripts, load order matters) -->
+  <script src="js/icons.js"></script>
+  <script src="js/data/mock.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/components/Icon.js"></script>
+  <script src="js/components/Avatar.js"></script>
+  <script src="js/components/Badge.js"></script>
+  <script src="js/components/EmptyState.js"></script>
+  <script src="js/components/ContactListItem.js"></script>
+  <script src="js/components/ConversationView.js"></script>
+  <script src="js/components/SideNav.js"></script>
+  <script src="js/components/BottomNav.js"></script>
+  <script src="js/components/TopBar.js"></script>
+  <script src="js/components/AppShell.js"></script>
+  <script src="js/views/MapView.js"></script>
+  <script src="js/views/ContactsView.js"></script>
+  <script src="js/views/ContactHome.js"></script>
+  <script src="js/views/ContactDetailView.js"></script>
+  <script src="js/views/RoomAuthView.js"></script>
+  <script src="js/views/ChannelsView.js"></script>
+  <script src="js/views/SettingsView.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

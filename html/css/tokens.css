@@ -1,0 +1,115 @@
+/* Design tokens — single source of truth for palette, spacing, radii, motion.
+   Dark is the default theme; light overrides via [data-theme="light"]. */
+
+:root {
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* Breakpoints (referenced in media queries): 768px, 1200px */
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 180ms;
+
+  /* Brand gradient */
+  --gradient-accent: linear-gradient(135deg, #2dd4bf 0%, #22d3ee 100%);
+
+  /* Layout metrics */
+  --sidebar-w: 264px;
+  --rail-w: 78px;
+  --topbar-h: 60px;
+  --bottomnav-h: 64px;
+  --list-w: 380px;
+  --list-w-tablet: 320px;
+}
+
+/* ---------- Dark theme (default) ---------- */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-0: #0a0e17;
+  --bg-1: #101624;
+  --bg-2: #161e30;
+  --bg-3: #1d2740;
+  --bg-glass: rgba(16, 22, 36, 0.82);
+  --border: #232e47;
+  --border-soft: #1a2338;
+
+  --text-0: #eef2fa;
+  --text-1: #a7b0c3;
+  --text-2: #6b7590;
+
+  --accent: #2dd4bf;
+  --accent-2: #22d3ee;
+  --accent-strong: #14b8a6;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+  --accent-contrast: #04211d;
+
+  --amber: #fbbf24;
+  --danger: #f87171;
+  --ok: #34d399;
+  --info: #60a5fa;
+
+  --bubble-out: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+  --bubble-in: #1b2338;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 6px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 0 1px rgba(45, 212, 191, 0.35), 0 4px 18px rgba(34, 211, 238, 0.12);
+}
+
+/* ---------- Light theme ---------- */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-0: #eef1f8;
+  --bg-1: #ffffff;
+  --bg-2: #f4f6fc;
+  --bg-3: #e7ecf6;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --border: #dde3ef;
+  --border-soft: #e8edf6;
+
+  --text-0: #131a2a;
+  --text-1: #46536e;
+  --text-2: #8a94ab;
+
+  --accent: #0d9488;
+  --accent-2: #0891b2;
+  --accent-strong: #0f766e;
+  --accent-soft: rgba(13, 148, 136, 0.1);
+  --accent-contrast: #ffffff;
+
+  --amber: #d97706;
+  --danger: #dc2626;
+  --ok: #059669;
+  --info: #2563eb;
+
+  --bubble-out: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+  --bubble-in: #e9edf6;
+
+  --shadow-1: 0 1px 2px rgba(19, 26, 42, 0.07);
+  --shadow-2: 0 8px 28px rgba(19, 26, 42, 0.12);
+  --shadow-glow: 0 0 0 1px rgba(13, 148, 136, 0.3), 0 4px 18px rgba(8, 145, 178, 0.12);
+}
