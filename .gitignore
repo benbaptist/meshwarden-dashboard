@@ -1,0 +1,5 @@
+/bin/
+/meshwarden-dashboard
+.env
+*.log
+.DS_Store
