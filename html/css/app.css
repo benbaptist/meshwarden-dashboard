@@ -472,6 +472,85 @@
   color: var(--danger);
 }
 
+.advert-intro {
+  margin: 0;
+  color: var(--text-1);
+  text-align: center;
+}
+
+.advert-route-options {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0 var(--sp-3);
+}
+
+.advert-route-option {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  min-height: 104px;
+  max-width: 180px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-weight: 650;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.advert-route-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.advert-route-option mw-icon {
+  color: var(--accent);
+}
+
+.advert-uri {
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-1);
+}
+
+.advert-uri__heading,
+.advert-uri__value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.advert-uri__heading {
+  margin-bottom: var(--sp-2);
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.advert-uri__heading span:last-child {
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+.advert-uri__value {
+  min-width: 0;
+}
+
+.advert-uri__value code {
+  overflow: hidden;
+  color: var(--accent);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .input {
   width: 100%;
   padding: 12px var(--sp-4);

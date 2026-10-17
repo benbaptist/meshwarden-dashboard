@@ -16,7 +16,6 @@
         contactName: "",
         contactType: 1,
         contactError: "",
-        advertMode: "flood",
         copied: false,
         notice: "",
       };
@@ -56,12 +55,16 @@
         this.contactName = "";
         this.addOpen = false;
       },
-      advertise: function () {
-        this.store.advertise(this.advertMode);
+      advertise: function (mode) {
+        this.store.advertise(mode);
         this.advertOpen = false;
-        this.notice = "Advert queued via " + (this.advertMode === "direct" ? "Zero Hop" : this.advertMode === "flood" ? "Flood Routed" : "manual routing") + ".";
+        this.notice = "Advert queued via " + (mode === "direct" ? "Zero Hop" : "Flood Routed") + ".";
         var self = this;
         setTimeout(function () { self.notice = ""; }, 3000);
+      },
+      openAdvert: function () {
+        this.contactError = "";
+        this.advertOpen = true;
       },
       copyOwnUri: function () {
         var self = this;
@@ -91,7 +94,7 @@
       '  <div class="md-list">' +
       '    <div class="page-header" style="padding:var(--sp-3);display:flex;gap:var(--sp-2);flex-wrap:wrap">' +
       '      <button class="btn btn--primary btn--sm" @click="addOpen = true"><mw-icon name="plus" :size="16" /> Add contact</button>' +
-      '      <button class="btn btn--ghost btn--sm" @click="advertOpen = true"><mw-icon name="radio" :size="16" /> Advert</button>' +
+      '      <button class="btn btn--ghost btn--sm" @click="openAdvert"><mw-icon name="radio" :size="16" /> Advert</button>' +
       '    </div>' +
       '    <div v-if="notice" class="list-section">{{ notice }}</div>' +
       '    <template v-if="favorites.length">' +
@@ -114,12 +117,16 @@
       '    </form>' +
       '  </mw-modal>' +
       '  <mw-modal v-if="advertOpen" title="Advertise contact" icon="radio" @close="advertOpen = false">' +
-      '    <label class="form-label">Routing<select class="input" v-model="advertMode"><option value="direct">Zero Hop</option><option value="flood">Flood Routed</option></select></label>' +
-      '    <p>Share your contact advert with the mesh.</p>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="advertOpen = false">Cancel</button><button class="btn btn--primary" @click="advertise">Advert now</button></div>' +
-      '    <hr />' +
-      '    <label class="form-label">Your contact URI<input class="input" readonly :value="\'meshcore://\' + store.account.public_key" /></label>' +
-      '    <div class="modal__actions"><button class="btn btn--ghost" @click="copyOwnUri">{{ copied ? "Copied" : "Copy URI" }}</button></div>' +
+      '    <p class="advert-intro">Choose how your contact advert is routed.</p>' +
+      '    <div class="advert-route-options">' +
+      '      <button class="advert-route-option" @click="advertise(\'flood\')"><mw-icon name="radio-tower" :size="26" /><span>Flood</span></button>' +
+      '      <button class="advert-route-option" @click="advertise(\'direct\')"><mw-icon name="send" :size="26" /><span>Zero Hop</span></button>' +
+      '    </div>' +
+      '    <div class="advert-uri">' +
+      '      <div class="advert-uri__heading"><span>Your contact URI</span><span>Share to connect</span></div>' +
+      '      <div class="advert-uri__value"><code class="mono">meshcore://{{ store.account.public_key }}</code><button class="icon-btn" @click="copyOwnUri" :aria-label="copied ? \'Copied\' : \'Copy URI\'"><mw-icon :name="copied ? \'check\' : \'copy\'" :size="17" /></button></div>' +
+      '      <p v-if="contactError" class="text-danger">{{ contactError }}</p>' +
+      '    </div>' +
       '  </mw-modal>' +
       "</div>",
   };
