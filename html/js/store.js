@@ -24,6 +24,17 @@
     roomAuth: {}, // public_key -> true once "authenticated" (mock)
     pings: {},    // public_key -> { state: 'idle'|'busy'|'done', ms: number|null }
 
+    // Path config: MeshCore networks use 1-, 2-, or 4-byte pubkey hashes in
+    // paths. The daemon will report this; mocked here so the path editor can
+    // validate typed hashes against it.
+    pathHashBytes: 1,
+
+    // Telemetry: public_key -> { password: string|null, history: [{ts, ok, battery?, snr?}] }
+    telemetry: Object.keys(MW.mockData.telemetry).reduce(function (acc, key) {
+      acc[key] = { password: null, history: MW.mockData.telemetry[key] };
+      return acc;
+    }, {}),
+
     contactType: function (contact) {
       return CONTACT_TYPE[contact.type] || CONTACT_TYPE[1];
     },
@@ -59,6 +70,85 @@
           self.pings[publicKey] = { state: "idle", ms: null };
         }, 4000);
       }, 700 + Math.random() * 900);
+    },
+
+    /* ---------- Paths ---------- */
+
+    setPathHashBytes: function (n) {
+      this.pathHashBytes = n;
+    },
+
+    // Hash a contact contributes when used as a path hop.
+    hopHash: function (publicKey) {
+      return publicKey.slice(0, this.pathHashBytes * 2);
+    },
+
+    // Resolve a hop hash to a known contact (prefix match, any hash width).
+    resolveHop: function (hash) {
+      var h = hash.toLowerCase();
+      return this.contacts.find(function (c) { return c.public_key.indexOf(h) === 0; }) || null;
+    },
+
+    pathLabel: function (contact) {
+      var p = contact.path;
+      if (!p || p.mode === "direct" || (p.mode === "manual" && !p.hops.length)) return "Direct";
+      if (p.mode === "flood") return "Flood";
+      return p.hops.length + (p.hops.length === 1 ? " hop" : " hops");
+    },
+
+    setPath: function (publicKey, path) {
+      var c = this.getContact(publicKey);
+      if (c) c.path = path;
+    },
+
+    /* ---------- Telemetry ---------- */
+
+    telemetryFor: function (publicKey) {
+      if (!this.telemetry[publicKey]) this.telemetry[publicKey] = { password: null, history: [] };
+      return this.telemetry[publicKey];
+    },
+
+    lastTelemetry: function (publicKey) {
+      var h = this.telemetryFor(publicKey).history;
+      return h.length ? h[0] : null;
+    },
+
+    forgetTelemetryPassword: function (publicKey) {
+      this.telemetryFor(publicKey).password = null;
+    },
+
+    // Mock pull: latency + ~30% failure (MeshCore can't tell a wrong
+    // password from a dead node). Real impl will go through the API.
+    fetchTelemetry: function (publicKey, password, remember, done) {
+      var self = this;
+      setTimeout(function () {
+        var ok = Math.random() >= 0.3;
+        var t = self.telemetryFor(publicKey);
+        var entry = { ts: Math.floor(Date.now() / 1000), ok: ok };
+        if (ok) {
+          var c = self.getContact(publicKey);
+          if (c) {
+            if (c.battery != null) c.battery = Math.max(0, Math.min(100, c.battery + Math.round(Math.random() * 6 - 4)));
+            if (c.snr != null) c.snr = Math.round((c.snr + (Math.random() - 0.5)) * 10) / 10;
+            entry.battery = c.battery;
+            entry.snr = c.snr;
+          }
+          t.password = remember ? password : null;
+        }
+        t.history.unshift(entry);
+        done(ok);
+      }, 900 + Math.random() * 600);
+    },
+
+    /* ---------- Contacts ---------- */
+
+    removeContact: function (publicKey) {
+      var i = this.contacts.findIndex(function (c) { return c.public_key === publicKey; });
+      if (i !== -1) this.contacts.splice(i, 1);
+      this.favorites.delete(publicKey);
+      delete this.pings[publicKey];
+      delete this.roomAuth[publicKey];
+      delete this.telemetry[publicKey];
     },
 
     isRoomAuthed: function (publicKey) {

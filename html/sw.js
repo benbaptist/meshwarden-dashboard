@@ -1,7 +1,7 @@
 /* Service worker — precaches the app shell so the dashboard installs and
    runs fully offline. Bump CACHE when shipping asset changes. */
 
-const CACHE = "meshwarden-v2";
+const CACHE = "meshwarden-v3";
 
 const SHELL = [
   "./",
@@ -21,6 +21,8 @@ const SHELL = [
   "./js/components/EmptyState.js",
   "./js/components/ContactListItem.js",
   "./js/components/ConversationView.js",
+  "./js/components/Modal.js",
+  "./js/components/PathEditor.js",
   "./js/components/SideNav.js",
   "./js/components/BottomNav.js",
   "./js/components/TopBar.js",
@@ -30,6 +32,7 @@ const SHELL = [
   "./js/views/ContactHome.js",
   "./js/views/ContactDetailView.js",
   "./js/views/RoomAuthView.js",
+  "./js/views/ManageView.js",
   "./js/views/ChannelsView.js",
   "./js/views/SettingsView.js",
   "./js/router.js",

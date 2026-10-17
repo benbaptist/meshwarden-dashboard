@@ -14,7 +14,7 @@ You are the expert on the MeshWarden dashboard frontend in `html/`. Read this fu
 
 ## The mock layer is TEMPORARY — design for its replacement
 
-- `js/data/mock.js` is placeholder data that **mirrors the daemon's real data shapes** (contacts with `public_key`, `adv_name`, `type` 1=companion/2=repeater/3=room/4=sensor, `last_seen`, `out_path`, `adv_lat/lon`; channels with `slot`/`id`/`name`; messages with `scope: 'contact'|'channel'`, `peer`, `dir`, `text`, `ts`, optional `sender`).
+- `js/data/mock.js` is placeholder data that **mirrors the daemon's real data shapes** (contacts with `public_key`, `adv_name`, `type` 1=companion/2=repeater/3=room/4=sensor, `last_seen`, `path: {mode: 'flood'|'direct'|'manual', hops: [hex hashes]}`, `adv_lat/lon`; channels with `slot`/`id`/`name`; messages with `scope: 'contact'|'channel'`, `peer`, `dir`, `text`, `ts`, optional `sender`; `telemetry` history per contact).
 - `js/store.js` is the **single source of truth** and the seam for the real backend: views/components never read `MW.mockData` directly, only `MW.store`. Its method surface (`getContact`, `messagesFor`, `sendMessage`, `ping`, `isRoomAuthed`, `authRoom`, `toggleFav`, …) is the contract a future API client must satisfy.
 - When wiring the real API: add `js/data/api.js` (client for the dashboard's Go backend → daemon gRPC, protos in `protos/`), make the store async-fed from it, and keep the component layer untouched. Do **not** scatter fetch calls into views, and do not hardcode assumptions that only mock data can satisfy.
 - Async reality will bring loading/empty/error states and live updates (event stream). Structure new features so data arrives through the store reactively, not via one-shot reads.

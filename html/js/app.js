@@ -17,8 +17,11 @@
   app.component("mw-side-nav", MW.components.SideNav);
   app.component("mw-bottom-nav", MW.components.BottomNav);
   app.component("mw-top-bar", MW.components.TopBar);
+  app.component("mw-modal", MW.components.Modal);
+  app.component("mw-path-editor", MW.components.PathEditor);
   app.component("mw-contact-detail", MW.views.ContactDetailView);
   app.component("mw-room-auth", MW.views.RoomAuthView);
+  app.component("mw-manage", MW.views.ManageView);
 
   app.use(MW.router);
   app.mount("#app");
