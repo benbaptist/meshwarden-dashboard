@@ -4,7 +4,9 @@
    colored div-icon markers by advertised lat/lon; tapping a marker opens a
    themed info bubble with a link to the contact detail page, tapping blank
    map dismisses it (Leaflet's closePopupOnClick). Leaflet handles mouse
-   drag/wheel/double-click and touch drag/pinch out of the box. */
+   drag/wheel/double-click and touch drag/pinch out of the box.
+   Deep link: /map?focus=<public_key> jumps to that node and opens its
+   bubble (used by the contact detail page's Map action). */
 
 (function () {
   window.MW = window.MW || {};
@@ -40,6 +42,11 @@
       },
     },
     watch: {
+      // Deep links from the contact detail page: /map?focus=<public_key>
+      "$route.query.focus": function (key) {
+        if (key && this.focusOn(key, true)) return;
+        if (this._map) this._map.closePopup();
+      },
       located: {
         deep: true,
         handler: function () {
@@ -62,7 +69,8 @@
       this.renderMarkers();
       this.$nextTick(function () {
         self._map.invalidateSize();
-        self.fitToNodes(false);
+        var focusKey = self.$route.query.focus;
+        if (!focusKey || !self.focusOn(focusKey, false)) self.fitToNodes(false);
       });
     },
     unmounted: function () {
@@ -142,6 +150,36 @@
             delete self._markers[key];
           }
         });
+      },
+
+      // Jump to a located contact and open its bubble. Returns false when
+      // the contact is unknown or has no position.
+      focusOn: function (key, animate) {
+        if (!this._map) return false;
+        var c = null;
+        for (var i = 0; i < this.located.length; i++) {
+          if (this.located[i].public_key === key) {
+            c = this.located[i];
+            break;
+          }
+        }
+        if (!c) return false;
+        var ll = [c.adv_lat, c.adv_lon];
+        var marker = this._markers[c.public_key];
+        if (marker) {
+          // Register before setView: its moveend fires synchronously.
+          this._map.once("moveend", function () {
+            // Defer: on the very first setView, the marker's layer add is
+            // still queued until the map 'load' that follows moveend, and
+            // openPopup() before that silently no-ops.
+            setTimeout(function () {
+              marker.openPopup();
+            }, 0);
+          });
+        }
+        if (animate) this._map.flyTo(ll, 15);
+        else this._map.setView(ll, 15, { animate: false });
+        return true;
       },
 
       fitToNodes: function (animate) {

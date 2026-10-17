@@ -3,7 +3,8 @@
    login screen); for repeaters and sensors it's the default panel.
 
    Actions live directly under the hero: Ping (repeaters/rooms only),
-   Manage (repeaters only, placeholder), Favorite, Share, Delete.
+   Manage (repeaters only, placeholder), Map (when the node advertises a
+   position), Favorite, Share, Delete.
    Path and Telemetry get their own cards below the identity card. */
 
 (function () {
@@ -45,6 +46,9 @@
       coords: function () {
         if (this.contact.adv_lat == null) return "—";
         return this.contact.adv_lat.toFixed(4) + ", " + this.contact.adv_lon.toFixed(4);
+      },
+      hasLocation: function () {
+        return this.contact.adv_lat != null && this.contact.adv_lon != null;
       },
       backTarget: function () {
         // Companions/rooms open this page on top of their chat (or login
@@ -174,6 +178,9 @@
       '      </button>' +
       '      <button v-if="manageable" class="action-btn" @click="$router.push(\'/contacts/\' + contact.public_key + \'/manage\')">' +
       '        <mw-icon name="sliders-horizontal" :size="19" /><span>Manage</span>' +
+      '      </button>' +
+      '      <button v-if="hasLocation" class="action-btn" @click="$router.push({ path: \'/map\', query: { focus: contact.public_key } })">' +
+      '        <mw-icon name="map" :size="19" /><span>Map</span>' +
       '      </button>' +
       '      <button class="action-btn" :class="{ \'is-active\': isFav }" @click="store.toggleFav(contact.public_key)">' +
       '        <mw-icon name="star" :size="19" /><span>{{ isFav ? "Faved" : "Favorite" }}</span>' +
