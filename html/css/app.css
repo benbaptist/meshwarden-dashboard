@@ -729,6 +729,13 @@
   gap: var(--sp-2);
 }
 
+.channel-add-intro {
+  margin: 0 0 var(--sp-1);
+  color: var(--text-1);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .channel-add-option {
   display: flex;
   align-items: center;

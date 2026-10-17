@@ -136,7 +136,7 @@
       '    <transition name="modal-step" mode="out-in">' +
       '      <div :key="modal">' +
       '        <template v-if="modal === \'menu\'">' +
-      '          <p>Choose how you want to add a channel.</p>' +
+      '          <p class="channel-add-intro">Select a channel type to continue.</p>' +
       '          <div class="channel-add-options">' +
       '            <button class="channel-add-option" @click="modal = \'create\'"><mw-icon name="lock" :size="20" /><span><strong>Create private channel</strong><small>Generate a new secret and join</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
       '            <button class="channel-add-option" @click="modal = \'private\'"><mw-icon name="key-round" :size="20" /><span><strong>Join private channel</strong><small>Enter a shared secret and local name</small></span><mw-icon name="chevron-right" :size="18" /></button>' +
