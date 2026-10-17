@@ -151,6 +151,49 @@
       delete this.telemetry[publicKey];
     },
 
+    addContact: function (publicKey, name, type) {
+      this.contacts.push({
+        public_key: publicKey,
+        adv_name: name || "Unknown contact",
+        type: type,
+        last_seen: Math.floor(Date.now() / 1000),
+        path: { mode: "direct", hops: [] },
+      });
+    },
+
+    advertise: function (mode) {
+      this.lastAdvertMode = mode;
+    },
+
+    addPrivateChannel: function (name, secret) {
+      var id = "ch-" + secret;
+      this.channels.push({
+        slot: this.nextChannelSlot(),
+        id: id,
+        name: name,
+        type: "private",
+        secret: secret,
+        unread: 0,
+      });
+      return id;
+    },
+
+    joinPublicChannel: function (name) {
+      var channelName = name.replace(/^#/, "").trim();
+      if (!channelName) return null;
+      var existing = this.channels.find(function (c) {
+        return c.type !== "private" && c.name.toLowerCase() === channelName.toLowerCase();
+      });
+      if (existing) return existing.id;
+      var id = "ch-public-" + channelName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      this.channels.push({ slot: this.nextChannelSlot(), id: id, name: channelName, type: "public", unread: 0 });
+      return id;
+    },
+
+    nextChannelSlot: function () {
+      return this.channels.reduce(function (max, c) { return Math.max(max, c.slot); }, -1) + 1;
+    },
+
     isRoomAuthed: function (publicKey) {
       var c = this.getContact(publicKey);
       return !!(c && (c.authed || this.roomAuth[publicKey]));

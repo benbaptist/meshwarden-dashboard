@@ -62,10 +62,12 @@
     },
 
     channels: [
-      { slot: 0, id: "ch-public",  name: "Public",      unread: 3 },
-      { slot: 1, id: "ch-ops",     name: "Ops Crew",    unread: 0 },
-      { slot: 2, id: "ch-alerts",  name: "WX Alerts",   unread: 1 },
-      { slot: 3, id: "ch-testing", name: "Test Bench",  unread: 0 },
+      { slot: 0, id: "ch-public",  name: "Public",      type: "public", unread: 3 },
+      { slot: 1, id: "ch-ops",     name: "Ops Crew",    type: "public", unread: 0 },
+      { slot: 2, id: "ch-alerts",  name: "WX Alerts",   type: "public", unread: 1 },
+      { slot: 3, id: "ch-testing", name: "Test Bench",  type: "public", unread: 0 },
+      { slot: 4, id: "ch-private-field-team", name: "Field Team", type: "private", secret: "8f2a6c1d4b9e3075a1c8d6f2e4b0a793", unread: 2 },
+      { slot: 5, id: "ch-private-maintenance", name: "Maintenance", type: "private", secret: "2b7e9d4a6c1f8035d9a2e7b4c6f1083a", unread: 0 },
     ],
 
     /* scope: 'contact' (peer = pubkey prefix) or 'channel' (peer = channel id) */

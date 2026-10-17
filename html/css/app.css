@@ -458,6 +458,20 @@
 
 /* ================= Inputs ================= */
 
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-4);
+  color: var(--text-1);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
 .input {
   width: 100%;
   padding: 12px var(--sp-4);
