@@ -22,7 +22,14 @@
       },
       title: function () {
         if (!this.entity) return "Unknown";
-        return this.scope === "channel" ? "# " + this.entity.name : this.entity.adv_name;
+        if (this.scope !== "channel") return this.entity.adv_name;
+        if (this.entity.type === "private" || this.entity.name.toLowerCase() === "public") return this.entity.name;
+        return "# " + this.entity.name;
+      },
+      channelIcon: function () {
+        if (!this.entity || this.scope !== "channel") return "";
+        if (this.entity.type === "private") return "lock";
+        return this.entity.name.toLowerCase() === "public" ? "globe" : "hash";
       },
       subtitle: function () {
         if (!this.entity) return "";
@@ -49,12 +56,6 @@
       },
       msgCount: function () {
         return this.store.messagesFor(this.scope, this.peer).length;
-      },
-      avatarContact: function () {
-        // Channel avatars reuse the avatar component with a synthetic contact.
-        return this.scope === "channel"
-          ? { public_key: this.peer, adv_name: this.title, type: 3 }
-          : this.entity;
       },
     },
     watch: {
@@ -100,7 +101,11 @@
       '    <button class="icon-btn only-mobile" style="margin-right:-4px" @click="$router.push(scope === \'channel\' ? \'/channels\' : \'/contacts\')" aria-label="Back">' +
       '      <mw-icon name="arrow-left" :size="20" />' +
       '    </button>' +
-      '    <mw-avatar v-if="entity" :contact="avatarContact" size="sm" />' +
+      '    <div v-if="entity && scope === \'channel\'" class="channel-icon channel-icon--sm"' +
+      '      :class="{ \'channel-icon--private\': entity.type === \'private\', \'channel-icon--public\': entity.name.toLowerCase() === \'public\' && entity.type !== \'private\' }">' +
+      '      <mw-icon :name="channelIcon" :size="16" />' +
+      '    </div>' +
+      '    <mw-avatar v-else-if="entity" :contact="entity" size="sm" />' +
       '    <div class="convo__header-meta">' +
       '      <div class="convo__header-name">{{ title }}</div>' +
       '      <div class="convo__header-sub">{{ subtitle }}</div>' +

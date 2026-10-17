@@ -116,7 +116,9 @@
       '    <div v-for="c in store.channels" :key="c.id" class="contact-item"' +
       '         :class="{ \'is-active\': isActive(c) }" role="button" tabindex="0"' +
       '         @click="open(c)" @keydown.enter="open(c)">' +
-      '      <mw-avatar :contact="{ public_key: c.id, adv_name: c.name, type: 3 }" />' +
+      '      <div class="channel-icon" :class="{ \'channel-icon--private\': c.type === \'private\', \'channel-icon--public\': c.name.toLowerCase() === \'public\' && c.type !== \'private\' }">' +
+      '        <mw-icon :name="c.type === \'private\' ? \'lock\' : c.name.toLowerCase() === \'public\' ? \'globe\' : \'hash\'" :size="21" />' +
+      '      </div>' +
       '      <div class="contact-item__meta">' +
       '        <div class="contact-item__name-row">' +
       '          <span class="contact-item__name">{{ c.name === "Public" ? "Public" : (c.type === "private" ? c.name : "# " + c.name) }}</span>' +
