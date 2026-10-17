@@ -1,0 +1,18 @@
+services:
+  dashboard:
+    build: .
+    container_name: meshwarden-dashboard
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # The daemon usually runs on the Docker host (or as the `meshcored`
+      # container on a shared network: set MESHWARDEN_HOST=meshcored).
+      MESHWARDEN_HOST: ${MESHWARDEN_HOST:-host.docker.internal}
+      # Fixed inside the container; change the published port instead.
+      MESHWARDEN_DASHBOARD_LISTEN: ":8080"
+    ports:
+      - "${MESHWARDEN_DASHBOARD_PORT:-8080}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
