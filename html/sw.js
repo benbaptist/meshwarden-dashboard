@@ -1,7 +1,7 @@
 /* Service worker — precaches the app shell so the dashboard installs and
    runs fully offline. Bump CACHE when shipping asset changes. */
 
-const CACHE = "meshwarden-v7";
+const CACHE = "meshwarden-v8";
 
 const SHELL = [
   "./",
@@ -12,6 +12,8 @@ const SHELL = [
   "./css/app.css",
   "./vendor/vue.global.prod.js",
   "./vendor/vue-router.global.prod.js",
+  "./vendor/leaflet/leaflet.js",
+  "./vendor/leaflet/leaflet.css",
   "./js/icons.js",
   "./js/data/mock.js",
   "./js/store.js",

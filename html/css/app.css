@@ -1328,42 +1328,247 @@
   box-shadow: none;
 }
 
-/* ================= Map placeholder ================= */
+/* ================= Map (Leaflet / OpenStreetMap) ================= */
 
 .map-view {
   flex: 1;
   position: relative;
   min-height: 0;
   overflow: hidden;
-  background:
-    radial-gradient(1000px 500px at 30% 20%, rgba(45, 212, 191, 0.06), transparent 60%),
-    var(--bg-0);
+  background: var(--bg-0);
 }
 
-.map-view__canvas {
+.map-view__map {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 0;
 }
 
-.map-dot {
-  position: absolute;
-  width: 14px;
-  height: 14px;
+/* Leaflet chrome follows the app design tokens */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--bg-1);
+  outline: none;
+}
+
+/* Dark theme: invert+dim OSM tiles so the base map blends into the UI.
+   Only tiles are filtered — markers, popups and controls stay crisp. */
+:root[data-theme="dark"] .leaflet-tile {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+.leaflet-bar {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-sm) !important;
+  box-shadow: var(--shadow-1) !important;
+}
+
+.leaflet-bar a {
+  background: var(--bg-glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--text-0);
+  border-bottom: 1px solid var(--border-soft);
+  transition: background var(--dur) var(--ease);
+}
+
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+  background: var(--bg-3);
+  color: var(--text-0);
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background: var(--bg-glass);
+  color: var(--text-2);
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+}
+
+.leaflet-control-attribution {
+  background: var(--bg-glass) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--text-2);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--r-sm) 0 0 0;
+}
+
+.leaflet-control-attribution a {
+  color: var(--accent-strong);
+}
+
+/* Node markers */
+.map-marker {
+  background: none;
+  border: none;
+}
+
+.map-marker__dot {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin: 3px; /* 40px hit target, 34px visual */
   border-radius: var(--r-pill);
-  transform: translate(-50%, -50%);
+  background: var(--marker-color, var(--accent));
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--marker-color, var(--accent)) 22%, transparent),
+    0 2px 8px rgba(0, 0, 0, 0.45);
   transition: transform var(--dur) var(--ease);
 }
 
-.map-dot:hover {
-  transform: translate(-50%, -50%) scale(1.35);
+.leaflet-marker-icon:hover .map-marker__dot,
+.leaflet-marker-icon:focus .map-marker__dot {
+  transform: scale(1.15);
 }
 
-.map-label {
+.leaflet-marker-icon:focus {
+  outline: none;
+}
+
+.leaflet-marker-icon:focus .map-marker__dot {
+  box-shadow: var(--shadow-glow);
+}
+
+/* Info bubble */
+.mw-popup .leaflet-popup-content-wrapper {
+  background: var(--bg-2);
+  color: var(--text-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+}
+
+.mw-popup .leaflet-popup-content {
+  margin: var(--sp-3) var(--sp-4);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.mw-popup .leaflet-popup-tip {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.mw-popup .leaflet-popup-close-button {
+  color: var(--text-2) !important;
+  font-size: 18px !important;
+  padding: 6px 8px 0 0 !important;
+}
+
+.mw-popup .leaflet-popup-close-button:hover {
+  color: var(--text-0) !important;
+}
+
+.map-popup__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.map-popup__chip {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: var(--r-pill);
+  background: var(--marker-color, var(--accent));
+  color: #fff;
+}
+
+.map-popup__title {
+  min-width: 0;
+}
+
+.map-popup__name {
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-popup__type {
+  font-size: 12px;
+  color: var(--text-1);
+}
+
+.map-popup__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-2);
+  color: var(--text-1);
+  font-size: 12.5px;
+}
+
+.map-popup__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.map-popup__open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--sp-3);
+  padding: 8px var(--sp-3);
+  min-height: 38px;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent-strong) !important;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.map-popup__open:hover,
+.map-popup__open:focus {
+  background: var(--accent);
+  color: var(--accent-contrast) !important;
+}
+
+/* Fit-to-nodes floating control */
+.map-view__fit {
   position: absolute;
-  transform: translate(-50%, -160%);
-  z-index: 5;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-sm);
+  background: var(--bg-glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  color: var(--text-0);
+  box-shadow: var(--shadow-1);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.map-view__fit:hover {
+  color: var(--accent);
+}
+
+.map-view__fit:active {
+  transform: scale(0.92);
 }
 
 .map-view__hint {
@@ -1371,6 +1576,7 @@
   left: 50%;
   bottom: var(--sp-5);
   transform: translateX(-50%);
+  z-index: 1000;
   font-size: 12px;
   color: var(--text-2);
   background: var(--bg-glass);
