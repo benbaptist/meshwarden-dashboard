@@ -837,10 +837,25 @@
 }
 
 .channel-add-intro {
-  margin: 0 0 var(--sp-1);
+  margin: 0;
   color: var(--text-1);
+  text-align: center;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.channel-add-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.channel-add-step .form-label {
+  margin-bottom: 0;
+}
+
+.channel-add-step .modal__actions {
+  margin-top: 0;
 }
 
 .channel-add-option {
@@ -1716,5 +1731,22 @@
   .side-nav__brand { justify-content: flex-start; padding: var(--sp-2) var(--sp-3) var(--sp-4); }
   .nav-item { justify-content: flex-start; padding: 11px var(--sp-3); }
   .nav-item.is-active::before { left: -12px; }
-  .side-nav__account { justify-content: flex-start; padding: var(--sp-3); }
+  .side-nav__account {
+    justify-content: flex-start;
+    gap: var(--sp-2);
+    padding: var(--sp-3) var(--sp-1) 0;
+    border: 0;
+    border-top: 1px solid var(--border-soft);
+    border-radius: 0;
+    background: none;
+  }
+  .side-nav__account .icon-btn {
+    width: 34px;
+    height: 34px;
+    color: var(--text-2);
+  }
+  .side-nav__account .icon-btn:hover {
+    background: rgba(248, 113, 113, 0.1);
+    color: var(--danger);
+  }
 }

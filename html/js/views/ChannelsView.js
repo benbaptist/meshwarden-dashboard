@@ -136,7 +136,7 @@
       '  </div>' +
       '  <mw-modal v-if="modal" :title="modalTitle" :icon="modalIcon" @close="modal = \'\'">' +
       '    <transition name="modal-step" mode="out-in">' +
-      '      <div :key="modal">' +
+      '      <div :key="modal" class="channel-add-step">' +
       '        <template v-if="modal === \'menu\'">' +
       '          <p class="channel-add-intro">Select a channel type to continue.</p>' +
       '          <div class="channel-add-options">' +
